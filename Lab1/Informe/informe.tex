@@ -1,0 +1,166 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% Topico     : Key Shedule
+% Autor      : Gustavo Rojas Torres
+% Santiago de Chile, 16/04/2018
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% 
+%
+\documentclass{report}
+%
+%
+%
+\usepackage{epsfig}
+%
+\usepackage{pdfpages}
+%
+\usepackage{amssymb}
+%
+\renewcommand*\thesection{\arabic{section}}
+\newcommand \tab{\hspace*{25 pt}}
+\newcommand \minitab{\hspace*{15 pt}}
+%
+\begin{document}
+\begin{titlepage}
+\begin{center}
+\psfig{figure=L-USACH-16.png,height=3cm,,}
+\end{center}
+\begin{center}
+{\bf Departamento de Matem\'atica y Ciencia de la Computaci\'on}
+\end{center}
+\vspace{3cm}
+\begin{center}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% MODIFICAR. Despues del tag \bf se coloca el titulo del trabajo
+%
+{\Large \bf Laboratorio 1 \\
+~~ \\
+Algoritmo Key Shedule}
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+\end{center}
+\begin{center}
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% MODIFICAR. Despues del tag \bf se coloca el semestre y año
+%
+{\large \bf Primer Semestre 2018}
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+\end{center}
+\vspace{5cm}
+\begin{tabular}{c l c}
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% MODIFICAR. En el primer campo colocar el nombre de la asignatura y su codigo
+%            En el segundo campo colocar el nombre del autor
+%
+Criptograf\'ia 22633 & ~~~~~~~~~~~~~~~~~ & Gustavo Rojas Torres \\
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% MODIFICAR. En el primer campo colocar el nombre de la carrera
+%            En el segundo campo color direccion electronica
+%
+Licenciatura en Ciencia de la Computaci\'on & ~~ & gustavo.rojas.t@usach.cl 
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+\end{tabular}
+\end{titlepage}
+%
+\section{Introducci\'on}
+El objetivo de este trabajo es an\'alizar e implementar el algoritmo Key Shedule generador de claves para un DES: Data Encryption Standard.
+%
+\section{Algoritmo implementado}
+El algoritmo PC-1.
+\newline
+\newline
+{\bf function} PC-1\\
+{\bf precondition}: array[] arreglo de bits, arrayn[] arreglo para las nuevas posiciones en PC-1\\
+{\bf postcondition}: arreglo PC-1\\
+\newline
+\newline
+~~
+\newline
+\begin{tabular}{r l}
+\\
+1 & \bf{begin function} \\
+2 & \minitab cont$\leftarrow$0, init$\leftarrow$56, i$\leftarrow$init\\
+3 & \minitab for j$\leftarrow$0 to 28 do\\
+4 & \minitab \minitab if j=7 or j=15 or j=23\\
+5 & \minitab \minitab \minitab array[init]$\leftarrow$array[57]\\
+6 & \minitab \minitab \minitab i$\leftarrow$i+init\\
+7 & \minitab \minitab end if\\
+8 & \minitab \minitab else\\
+9 & \minitab \minitab \minitab i$\leftarrow$i-8\\
+10 & \minitab \minitab end else\\
+11 & \minitab \minitab cont++\\
+12 & \minitab end for\\
+13 & \minitab i$\leftarrow$62, v$\leftarrow$0\\
+14 & \minitab for j$\leftarrow$28 to 56 do\\
+15 & \minitab \minitab array[j]$\leftarrow$array[i]\\
+16 & \minitab \minitab if j=35 or j=43 or j=50\\
+17 & \minitab \minitab \minitab if v=2\\
+18 & \minitab \minitab \minitab \minitab i$\leftarrow$i+23\\
+19 & \minitab \minitab \minitab end if\\
+20 & \minitab \minitab \minitab else\\
+21 & \minitab \minitab \minitab \minitab i$\leftarrow$i+(init-2)\\
+22 & \minitab \minitab \minitab \minitab v$\leftarrow$v+1\\
+23 & \minitab \minitab \minitab end else\\
+24 & \minitab \minitab end if\\
+25 & \minitab \minitab else\\
+26 & \minitab \minitab \minitab i$\leftarrow$i-8\\
+27 & \minitab \minitab end else\\
+28 & \minitab end for\\
+29 & \bf end function
+\end{tabular}
+~~~
+\newline
+\newline
+\newline
+La clave de 64-bits primero se reduce a 56 bits ignorando cada bit multiplo de 8. En la permutaci\'on PC-1 inicial elimina estos bits.
+Los bits eliminados no aumentan el espacio clave\\
+\newline
+\newline
+\newline
+El algoritmo PC-2\\
+\begin{itemize}
+\item[1] La clave resultante de 56 bits se divide en dos mitades $C_0$ y $D_0$.\\
+\item[2] Las dos mitades de 28 bits se giran en una o dos posiciones de bit dependiendo de la ronda i.\\
+\item[3] Las rondas i=1,2,9,16 las dos mitades se giran hacia la izquierda en un bit. El resto de los casos las dos mitades son giradas a la izquierda por dos bits.\\
+\end{itemize}
+El n\'umero total de posiciones de rotaci\'on es 28.
+%
+\section{Formulaci\'on del experimento}
+Dado una clave de de 64-bits primero se reduce a 56 bits ignorando cada bit multiplo de 8. En la permutaci\'on PC-1 inicial elimina estos bits. Luego esta clave se divide en dos mitades C0 y D0. Las dos mitades de 28 bits de desplazan c\'iclicamente, es decir, se giran en una o dos posiciones de bit dependiendo de la ronda i seg\'un las siguientes reglas:\\
+\begin{itemize}
+\item[-] Las rondas i=1,2,9,16 las dos mitades son giradas a la izquierda en un bit.
+\item[-] Las rondas i$\neq$1,2,9,16 las dos mitades son giradas a la izquierda por dos bits.\\
+\end{itemize}
+Las rotaciones solo tienen lugar dentro de la mitad izquierda y derecha. El n\'umero total de posiciones de rotaci\'on es 4x1+12x2=28. Esto lleva a la propiedad que $C_0=C_{16}$ y $D_0=D_{16}$.\\
+\newline
+Para derivar las claves $k_i$ (de 48 bits cada una) de las 16 rondas del DES, las dos mitades se permutan de nuevo bit a bit utilizando la permutaci\'on PC-2. Los 56 bits de entrada de $C_i$ y $D_i$ e ignora 8 bits de $C_i$ y $D_i$.
+%
+\section{Curvas de desempe\~no de resultados}
+\begin{center}
+\psfig{figure=desempeño,height=10cm}
+\end{center}
+%
+\section{Conclusiones}
+Si bien el Data Encryption Standard (DES) es considerado inseguro para algunos ataques, dado que el conjunto de claves es muy peque\~no, es el m\'as popular algoritmo de cifrado de bloques. Aun hoy en d\'ia se sigue utilizando en algunas aplicaciones.
+%
+\section{Forma de Compilaci\'on}
+En la terminal, ubicarse en el directorio donde se encuentra el codigo.c
+\begin{itemize}
+\item[1] gcc lab1.c -o lab1
+\item[2] ./lab1
+\end{itemize}
+%
+\end{document}

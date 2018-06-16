@@ -1,0 +1,167 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% Topico     : AES
+% Autor      : Gustavo Rojas Torres
+% Santiago de Chile, 23/05/2018
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% 
+%
+\documentclass{report}
+%
+%
+%
+\usepackage{epsfig}
+%
+\usepackage{pdfpages}
+%
+\usepackage{amssymb}
+%
+\renewcommand*\thesection{\arabic{section}}
+\newcommand \tab{\hspace*{25 pt}}
+\newcommand \minitab{\hspace*{15 pt}}
+%
+\begin{document}
+\begin{titlepage}
+\begin{center}
+\psfig{figure=L-USACH-16.png,height=3cm,,}
+\end{center}
+\begin{center}
+{\bf Departamento de Matem\'atica y Ciencia de la Computaci\'on}
+\end{center}
+\vspace{3cm}
+\begin{center}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% MODIFICAR. Despues del tag \bf se coloca el titulo del trabajo
+%
+{\Large \bf Laboratorio 2 \\
+~~ \\
+AES: Advanced Encryption Standard}
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+\end{center}
+\begin{center}
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% MODIFICAR. Despues del tag \bf se coloca el semestre y año
+%
+{\large \bf Primer Semestre 2018}
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+\end{center}
+\vspace{5cm}
+\begin{tabular}{c l c}
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% MODIFICAR. En el primer campo colocar el nombre de la asignatura y su codigo
+%            En el segundo campo colocar el nombre del autor
+%
+Criptograf\'ia 22633 & ~~~~~~~~~~~~~~~~~ & Gustavo Rojas Torres \\
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% MODIFICAR. En el primer campo colocar el nombre de la carrera
+%            En el segundo campo color direccion electronica
+%
+Licenciatura en Ciencia de la Computaci\'on & ~~ & gustavo.rojas.t@usach.cl 
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+\end{tabular}
+\end{titlepage}
+%
+\section{Introducci\'on}
+El objetivo de este trabajo es an\'alizar e implementar la primera ronda del algoritmo de encriptaci\'on AES.
+%
+\section{Algoritmo implementado}
+El algoritmo para obtener la fila y columna de cada bloque A de 8 bits.
+\newline
+\newline
+{\bf function} row-and-column\\
+{\bf precondition}: array[] arreglo A de bits, arrayn[] arreglo para las nuevas posiciones en PC-1\\
+{\bf postcondition}: Arreglo con las especificaciones de filas y columnas\\
+\newline
+\newline
+~~
+\begin{tabular}{r l}
+\\
+1 & \bf{begin function} \\
+2 & \minitab j$\leftarrow$0\\
+3 & \minitab for i$\leftarrow$ 0 to n do\\
+4 & \minitab \minitab $row_j$ = $array_i$*8 + $array_i+1$*4 + $array_i+2$*2 + $array_i+3$*1\\
+5 & \minitab \minitab $column_j$ = $array_i+4$*8 + $array_i+5$*4 + $array_i+6$*2 + $array_i+7$*1\\
+6 & \minitab \minitab j$\leftarrow$j+1\\
+7 & \minitab end for\\
+8 & \bf end function\\
+\end{tabular}
+~~~
+\newline
+\newline
+\newline
+\newline
+El algoritmo para convertir binarios a hexadecimal.\\
+\newline
+{\bf function} bintohex\\
+{\bf precondition}: hex[] arreglo vac\'io\\
+{\bf postcondition}: Arreglo hex[] de hexadecimales.\\
+\newline
+\newline
+\begin{tabular}{r l}
+\\
+1 & \bf{begin function} \\
+2 & \minitab for i$\leftarrow$0 to 16 do\\
+3 & \minitab \minitab hex[i] = SBox[row[i]][column[i]]\\
+4 & \minitab end for\\
+6 & \bf end function\\
+\end{tabular}
+~~~
+\newpage
+\noindent El algoritmo para mostrar el hexadecimal como binario.\\
+\newline
+{\bf function} hextobin\\
+{\bf precondition}: hex[] arreglo de hexadecimales\\
+{\bf postcondition}: Representaci\'on binaria de cada hexadecimal\\
+\newline
+\newline
+\begin{tabular}{r l}
+\\
+1 & \bf{begin function} \\
+2 & \minitab for i$\leftarrow$0 to 16 do\\
+3 & \minitab \minitab for pb$\leftarrow$7 to 0 do\\
+4 & \minitab \minitab \minitab if $hex_i$ and $(1<<pb)$)\\
+5 & \minitab \minitab \minitab \minitab print 1\\
+6 & \minitab \minitab \minitab else\\
+7 & \minitab \minitab \minitab \minitab print 0\\
+8 & \minitab \minitab end for\\
+9 & \minitab end for\\
+10 & \minitab print $|$\\
+11 & \bf end function\\
+\end{tabular}
+\newline
+%
+\section{Formulaci\'on del experimento}
+Los requisitos que debe cumplir este nuevo criptosistema son: Cifrado de bloque, con bloques de 128-bits. Debe soportar claves de longitud: 128, 192 y 256 bit.\\
+\newline
+Para poder obtener los resultados del algoritmo AES: Advances Encryption Standard, se implement\'o el algoritmo en lenguaje C.
+%
+\section{Curvas de desempe\~no de resultados}
+\begin{center}
+\psfig{figure=desempeño,height=5.2cm}
+\end{center}
+%
+\section{Conclusiones}
+El AES: Advanced Encryption Standard es considerado un criptosistema m\'as seguro, y es eficiente en software como en hardware, en comparaci\'on del DES el cual es un cryptosistema mucho menos seguro ya que en este se utilizan ocho diferentes S-Boxes, mientras que en el AES todos los 16 S-Boxes son id\'enticos.
+%
+\section{Forma de Compilaci\'on}
+En la terminal, ubicarse en el directorio donde se encuentra el codigo.c
+\begin{itemize}
+\item[1] gcc lab2.c -o lab2
+\item[2] ./lab2
+\end{itemize}
+%
+\end{document}
